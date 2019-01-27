@@ -25,12 +25,14 @@ function weightcochain(cells, weights)
 end
 
 function weightcochains(cplx, w)
-    Dict(key => cplx2struct(cells(cplx, key), val) for (key, val) in w)
+    Dict(key => weightcochain(cells(cplx, key), val) for (key, val) in w)
 end
 
 function face(s, i)
     Tuple(val for (ind, val) in enumerate(s) if ind != i)
 end
+
+boundaryvalue(t::NTuple{N, Any}, ::Missing) where {N} = missing
 
 @generated function boundaryvalue(t::NTuple{N, Any}, cells) where N
     expr = :(cells[face(t, 1)])
@@ -39,4 +41,10 @@ end
         expr = Expr(:call, sign, expr, :(cells[face(t, $i)]))
     end
     expr
+end
+
+function simplexlist(cochains)
+    sv = vcat((StructArray(weight = val.values, dim = fill(key, length(val)), index = 1:length(val)) for (key, val) in cochains)...)
+    sort!(sv)
+    sv
 end
