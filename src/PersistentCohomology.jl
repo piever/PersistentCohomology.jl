@@ -1,6 +1,7 @@
 module PersistentCohomology
 
 using StructArrays
+using StructArrays: fieldarrays
 using SparseArrays, LinearAlgebra
 using IntervalSets
 
