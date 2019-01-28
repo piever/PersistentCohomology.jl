@@ -4,13 +4,9 @@ authors = ["Pietro Vertechi <pietro.vertechi@neuro.fchampalimaud.org>"]
 version = "0.1.0"
 
 [deps]
-ComputationalHomology = "9393a4d0-be1e-45b0-9991-b60434c721e6"
-SmithNormalForm = "ba71f38f-f508-439b-ac77-437f86a20aa1"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 StructArrays = "09ab397b-f2b6-538f-b94a-2f83cf4a842a"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-
-[targets]
-test = ["Test"]

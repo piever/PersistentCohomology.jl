@@ -3,26 +3,6 @@
 [[Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
-[[BoundingSphere]]
-deps = ["InteractiveUtils", "LinearAlgebra", "Random", "Statistics", "Test"]
-git-tree-sha1 = "81a9ad8c30507e213b03ed2882b72db82dcce0b3"
-uuid = "747eb165-47b8-53f2-ad32-9704a7dfc50a"
-version = "0.1.0"
-
-[[ComputationalHomology]]
-deps = ["BoundingSphere", "Distances", "LinearAlgebra", "Random", "SmithNormalForm", "SparseArrays", "Statistics"]
-git-tree-sha1 = "de3f6c9c0cbbf51f5d0e0a2581fb047b4eceff60"
-repo-rev = "master"
-repo-url = "https://github.com/wildart/ComputationalHomology.jl.git"
-uuid = "9393a4d0-be1e-45b0-9991-b60434c721e6"
-version = "0.3.0"
-
-[[Distances]]
-deps = ["LinearAlgebra", "Printf", "Random", "Statistics", "Test"]
-git-tree-sha1 = "0e37d8a95bafbeb9c800ef27ab6f443d29e17610"
-uuid = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
-version = "0.7.4"
-
 [[Distributed]]
 deps = ["Random", "Serialization", "Sockets"]
 uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
@@ -45,10 +25,6 @@ uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
 deps = ["Base64"]
 uuid = "d6f4376e-aef5-505a-96c1-9c027394607a"
 
-[[Printf]]
-deps = ["Unicode"]
-uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
-
 [[Random]]
 deps = ["Serialization"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
@@ -62,24 +38,12 @@ version = "0.5.2"
 [[Serialization]]
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 
-[[SmithNormalForm]]
-deps = ["LinearAlgebra", "SparseArrays"]
-git-tree-sha1 = "413a16d88decbc6a3c0af83a9a3f387a19a5a6d5"
-repo-rev = "master"
-repo-url = "https://github.com/wildart/SmithNormalForm.jl.git"
-uuid = "ba71f38f-f508-439b-ac77-437f86a20aa1"
-version = "0.2.1"
-
 [[Sockets]]
 uuid = "6462fe0b-24de-5631-8697-dd941f90decc"
 
 [[SparseArrays]]
 deps = ["LinearAlgebra", "Random"]
 uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
-
-[[Statistics]]
-deps = ["LinearAlgebra", "SparseArrays"]
-uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [[StructArrays]]
 deps = ["Requires", "Test"]
@@ -90,6 +54,3 @@ version = "0.2.0"
 [[Test]]
 deps = ["Distributed", "InteractiveUtils", "Logging", "Random"]
 uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-
-[[Unicode]]
-uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"

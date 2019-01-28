@@ -17,17 +17,6 @@ Broadcast.broadcasted(f::Function, A::Cochain, B::Cochain) = broadcast(f, A, B)
 Broadcast.broadcasted(f::Function, A, B::Cochain) = broadcast(f, A, B)
 Broadcast.broadcasted(f::Function, A::Cochain, B) = broadcast(f, A, B)
 
-function weightcochain(cells, weights)
-    s = StructArray(Tuple(a[:values]) for a in cells)
-    p = sortperm(s)
-    sorted = s[p]
-    Cochain(sorted, weights[p])
-end
-
-function weightcochains(cplx, w)
-    Dict(key => weightcochain(cells(cplx, key), val) for (key, val) in w)
-end
-
 function face(s, i)
     Tuple(val for (ind, val) in enumerate(s) if ind != i)
 end
