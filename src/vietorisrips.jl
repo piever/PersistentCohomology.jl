@@ -1,8 +1,3 @@
-function emptysimplexvector(::Type{T}, n) where T
-    typ = NTuple{n+1, T}
-    StructVector{typ}(undef, 0)
-end
-
 function vietorisrips(g::AbstractSparseMatrix, dim_max = 2)
     lt = sparse_uppertriangular(g)
     vietorisrips_uppertriangular(lt, dim_max)
@@ -17,22 +12,25 @@ function sparse_uppertriangular(g::AbstractSparseMatrix)
 end 
 
 function vietorisrips_uppertriangular(g::SparseMatrixCSC{U, T}, dim_max = 2) where {U, T}
-    v = Dict{Int, Cochain}()
-    us = one(T):T(size(g, 1))
-    for i in 0:dim_max
-        v[i] = Cochain(emptysimplexvector(T, i), U[])
+    v = ntuple(dim_max+1) do npts
+        Cochain(StructVector{NTuple{npts, T}}(undef, 0), U[])
     end
+    compute_simplices!(v, g, dim_max)
+    return v
+end
+
+function compute_simplices!(v, g::SparseMatrixCSC{U, T}, dim_max) where {U, T}
+    us = one(T):T(size(g, 1))
     for u in us
         ptr = g.colptr[u]:g.colptr[u+1]-1
         nu = view(g.rowval, ptr)
         ws = view(g.nzval, ptr)
         add_cofaces!(v, g, (u,), zero(U), StructVector((nu, ws)), dim_max)
     end
-    return v
 end
 
-function add_cofaces!(v, g, sim, sim_weight, weighted_neighbors, dim_max = 2)
-    cocycle = v[length(sim)-1]
+function add_cofaces!(v, g, sim, sim_weight, weighted_neighbors, dim_max)
+    cocycle = v[length(sim)]
     push!(cocycle.simplices, sim)
     push!(cocycle.values, sim_weight)
 
