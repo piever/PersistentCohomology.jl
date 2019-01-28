@@ -6,6 +6,8 @@ end
 Base.length(c::Cochain) = length(c.values)
 Base.getindex(s::Cochain, t::Tuple) = s.values[searchsortedfirst(s.simplices, t)]
 
+Cochain(c::Cochain, v::AbstractVector) = Cochain(c.simplices, v)
+
 # From IndexedTables to get similar functionality as NDSparse
 Base.broadcast(f::Function, s::Cochain, t::Cochain) = Cochain(s.simplices, broadcast(f, s.values, t.values))
 Base.broadcast(f::Function, x::Cochain) = Cochain(x.simplices, broadcast(f, x.values))
