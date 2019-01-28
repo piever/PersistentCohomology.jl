@@ -7,9 +7,11 @@ function initialize_cocycles(::Type{T}, ::Type{U}, cplx) where {T, U}
 end
 
 function persistent_cocycles(::Type{T}, ::Type{U}, cplx, sv, max_dim) where {T, U}
-    cocycles = initialize_cocycles(T, U, cplx)
+    cocycles_extended = initialize_cocycles(T, U, cplx)
+    cocycles = cocycles_extended[1:min(length(cocycles_extended), max_dim+1)]
     for row in sv
         row.npts == 1 && continue
+        row.npts > length(cocycles)+1 && continue
         c_small = cocycles[row.npts-1]
         simplex = cplx[row.npts].simplices[row.index]
         m = map(c_small) do (coc, interval)
@@ -17,7 +19,7 @@ function persistent_cocycles(::Type{T}, ::Type{U}, cplx, sv, max_dim) where {T, 
         end
         s = findall(t -> !ismissing(t) && !iszero(t), m)
         if isempty(s)
-            row.npts <= max_dim && continue
+            row.npts > length(cocycles) && continue
             model = cplx[row.npts]
             null = spzeros(T, length(model))
             null[row.index] = one(T)
