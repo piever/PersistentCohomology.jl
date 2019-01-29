@@ -12,13 +12,11 @@ function face(s, i)
     Tuple(val for (ind, val) in enumerate(s) if ind != i)
 end
 
-boundaryvalue(t::NTuple{N, Any}, ::Missing) where {N} = missing
-
-@generated function boundaryvalue(t::NTuple{N, Any}, cells) where N
-    expr = :(cells[face(t, 1)])
+@generated function boundaryvalue(simplex::NTuple{N, Any}, cochain) where N
+    expr = :(cochain[face(simplex, 1)])
     for i in 2:N
         sign = isodd(i) ? (:+) : (:-) 
-        expr = Expr(:call, sign, expr, :(cells[face(t, $i)]))
+        expr = Expr(:call, sign, expr, :(cochain[face(simplex, $i)]))
     end
     expr
 end
