@@ -8,12 +8,6 @@ function initialize_cocycles(::Type{T}, ::Type{U}, cplx) where {T, U}
     end
 end
 
-function onecochain(::Type{T}, c::Cochain, i) where {T}
-    null = spzeros(T, length(c))
-    null[i] = one(T)
-    Cochain(c, null)
-end
-
 function persistent_cocycles(::Type{T}, ::Type{U}, cplx, sv, max_dim) where {T, U}
     cocycles_extended = initialize_cocycles(T, U, cplx)
     cocycles = cocycles_extended[1:min(length(cocycles_extended), max_dim+1)] 

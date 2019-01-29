@@ -8,6 +8,12 @@ Base.getindex(s::Cochain, t::Tuple) = s.values[searchsortedfirst(s.simplices, t)
 
 Cochain(c::Cochain, v::AbstractVector) = Cochain(c.simplices, v)
 
+function onecochain(::Type{T}, c::Cochain, i) where {T}
+    null = spzeros(T, length(c))
+    null[i] = one(T)
+    Cochain(c, null)
+end
+
 function face(s, i)
     Tuple(val for (ind, val) in enumerate(s) if ind != i)
 end
