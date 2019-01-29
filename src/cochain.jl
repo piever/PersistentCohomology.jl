@@ -12,7 +12,7 @@ function face(s, i)
     Tuple(val for (ind, val) in enumerate(s) if ind != i)
 end
 
-@generated function boundaryvalue(simplex::NTuple{N, Any}, cochain) where N
+@generated function boundaryvalue(cochain, simplex::NTuple{N, Any}) where N
     expr = :(cochain[face(simplex, 1)])
     for i in 2:N
         sign = isodd(i) ? (:+) : (:-) 

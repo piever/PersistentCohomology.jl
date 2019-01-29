@@ -25,7 +25,7 @@ function persistent_cocycles(::Type{T}, ::Type{U}, cplx, sv, max_dim) where {T, 
             c_small = cocycles[row.npts-1]
             simplex = cplx[row.npts].simplices[row.index]
             m = map(c_small) do (coc, interval)
-                row.weight in interval ? boundaryvalue(simplex, coc) : missing
+                row.weight in interval ? boundaryvalue(coc, simplex) : missing
             end
             s = findall(t -> !ismissing(t) && !iszero(t), m)
             if isempty(s)
