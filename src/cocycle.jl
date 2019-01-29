@@ -8,9 +8,9 @@ function initialize_cocycles(::Type{T}, ::Type{U}, cplx) where {T, U}
     end
 end
 
-function generate_remove_cocycles!(::Type{T}, ::Type{U}, cplx, c_small, c_big, row) where {T, U}
+function generate_remove_cocycles!(::Type{T}, ::Type{U}, simplices, c_small, c_big, row) where {T, U}
     for index in row.indices
-        simplex = cplx[row.npts].simplices[index]
+        simplex = simplices[index]
         m = map(c_small) do (coc, interval)
             row.weight in interval ? boundaryvalue(coc, simplex) : zero(U)
         end
@@ -25,7 +25,7 @@ function generate_remove_cocycles!(::Type{T}, ::Type{U}, cplx, c_small, c_big, r
             t0, _ = endpoints(ic)
             c_small.span[li] = Span{U}(t0, row.weight)
         elseif c_big !== nothing
-            cocycle = onecochain(T, cplx[row.npts], index)
+            cocycle = onecochain(T, simplices, index)
             span = Span{U}(row.weight, U(Inf))
             push!(c_big, (cocycle = cocycle, span = span))
         end
@@ -41,7 +41,7 @@ function persistent_cocycles(::Type{T}, ::Type{U}, cplx, max_dim) where {T, U}
         row = (indices = indices, npts = npts, weight = weight)
         c_small = npts == 1 ? () : cocycles[npts-1]
         c_big = npts <= length(cocycles) ? cocycles[npts] : nothing
-        generate_remove_cocycles!(T, U, cplx, c_small, c_big, row)
+        generate_remove_cocycles!(T, U, cplx[npts].simplices, c_small, c_big, row)
     end
     map(cocycles) do c
         filter(t -> !isempty(t.span), c)
