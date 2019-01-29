@@ -26,9 +26,3 @@ end
     end
     expr
 end
-
-function simplexlist(cochains)
-    sv = vcat((StructArray(weight = val.values, npts = fill(ind, length(val)), index = 1:length(val)) for (ind, val) in enumerate(cochains))...)
-    sort!(sv)
-    sv
-end

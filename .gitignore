@@ -4,4 +4,5 @@
 /deps/deps.jl
 /docs/build
 sketch.jl
+*play.jl
 Manifest.toml
