@@ -36,7 +36,7 @@ using GaloisFields
 end
     
 @testset "persistent_cocycles" begin
-    const GF = @GaloisField 3
+    GF = @GaloisField 3
     ts = [-pi, -pi/2, 0, pi/2]
     pts = map(t -> [cos(t), sin(t)], ts)
 
