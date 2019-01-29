@@ -1,7 +1,10 @@
 using PersistentCohomology
+using PersistentCohomology: Span
+
 using Test
 
 using SparseArrays, StructArrays
+using LinearAlgebra
 using GaloisFields
 
 @testset "vietorisrips" begin
