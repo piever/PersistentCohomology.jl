@@ -4,12 +4,14 @@ authors = ["Pietro Vertechi <pietro.vertechi@neuro.fchampalimaud.org>"]
 version = "0.1.0"
 
 [deps]
+IntervalSets = "8197267c-284f-5f27-9208-e0e47529a953"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 StructArrays = "09ab397b-f2b6-538f-b94a-2f83cf4a842a"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+GaloisFields = "8d0d7f98-d412-5cd4-8397-071c807280aa"
 
 [targets]
-test = ["Test"]
+test = ["Test", "GaloisFields"]
