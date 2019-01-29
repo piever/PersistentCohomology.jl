@@ -5,7 +5,7 @@ using StructArrays: finduniquesorted
 using SparseArrays, LinearAlgebra
 using IntervalSets
 
-export Cochain, vietorisrips
+export Cochain, vietorisrips, persistent_cocycles
 
 include("cochain.jl")
 include("vietorisrips.jl")

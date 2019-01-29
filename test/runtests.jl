@@ -52,7 +52,7 @@ end
     short = m[1, 2]
     long = m[1, 3]
 
-    cocycles = PersistentCohomology.persistent_cocycles(GF, cplx, 1)
+    cocycles = persistent_cocycles(GF, cplx, 1)
 
     @test cocycles[1].span[1] == Span{Float64}(0, Inf)
     @test findnz(cocycles[1].cocycle[1].values) == ([1, 2, 3, 4], GF.([1, 1, 1, 1]))
