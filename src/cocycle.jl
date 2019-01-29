@@ -44,7 +44,9 @@ function persistent_cocycles(::Type{T}, ::Type{U}, cplx, sv, max_dim) where {T, 
             end
         end
     end
-    cocycles
+    map(cocycles) do c
+        filter(t -> !isempty(t.span), c)
+    end
 end
 
 persistent_cocycles(::Type{T}, cplx, sv, max_dim) where {T} =
