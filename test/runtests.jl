@@ -49,12 +49,10 @@ end
     @test cplx[2].simplices == StructArray([(2, 1), (3, 1), (3, 2), (4, 1), (4, 2), (4, 3)])
     @test cplx[3].simplices == StructArray([(3, 2, 1), (4, 2, 1), (4, 3, 1), (4, 3, 2)])
 
-    sv = PersistentCohomology.simplexlist(cplx)
-
     short = m[1, 2]
     long = m[1, 3]
 
-    cocycles = PersistentCohomology.persistent_cocycles(GF, cplx, sv, 1)
+    cocycles = PersistentCohomology.persistent_cocycles(GF, cplx, 1)
 
     @test cocycles[1].span[1] == Span{Float64}(0, Inf)
     @test findnz(cocycles[1].cocycle[1].values) == ([1, 2, 3, 4], GF.([1, 1, 1, 1]))
