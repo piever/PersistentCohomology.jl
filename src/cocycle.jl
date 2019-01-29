@@ -37,10 +37,10 @@ function persistent_cocycles(::Type{T}, ::Type{U}, cplx, sv, max_dim) where {T, 
                 lc, ic = c_small[li]
                 for ii in s[1:end-1]
                     ratio = m[ii] / m[li]
-                    c_small[ii][1].values .-= ratio .* lc.values
+                    c_small[ii].cocycle.values .-= ratio .* lc.values
                 end
                 (t0, t1) = endpoints(ic)
-                fieldarrays(c_small)[2][li] = Span{U}(t0, row.weight)
+                c_small.span[li] = Span{U}(t0, row.weight)
             end
         end
     end

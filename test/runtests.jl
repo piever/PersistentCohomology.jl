@@ -34,4 +34,14 @@ using SparseArrays, StructArrays
     @test length(cplx) == 2
 end
     
+using GaloisFields
+const GF = @GaloisField 3
+ts = -pi:0.5:pi
+pts = map(t -> [cos(t), sin(t)], ts)
+
+m = [norm(pt1-pt2) for pt1 in pts, pt2 in pts]
+cplx = vietorisrips(sparse(m), 2)
+sv = PersistentCohomology.simplexlist(cplx)
+
+PersistentCohomology.persistent_cocycles(GF, cplx, sv, 1)
 
