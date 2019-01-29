@@ -8,11 +8,12 @@ function initialize_cocycles(::Type{T}, ::Type{U}, cplx) where {T, U}
     end
 end
 
-function generate_remove_cocycles!(::Type{T}, ::Type{U}, simplices, c_small, c_big, row) where {T, U}
-    for index in row.indices
+function update_cocycles!(::Type{T}, ::Type{U}, simplices,
+                          c_small, c_big, indices, weight) where {T, U}
+    for index in indices
         simplex = simplices[index]
         m = map(c_small) do (coc, interval)
-            row.weight in interval ? boundaryvalue(coc, simplex) : zero(U)
+            weight in interval ? boundaryvalue(coc, simplex) : zero(U)
         end
         s = findall(!iszero, m)
         if !isempty(s)
@@ -23,10 +24,10 @@ function generate_remove_cocycles!(::Type{T}, ::Type{U}, simplices, c_small, c_b
                 c_small[ii].cocycle.values .-= ratio .* lc.values
             end
             t0, _ = endpoints(ic)
-            c_small.span[li] = Span{U}(t0, row.weight)
+            c_small.span[li] = Span{U}(t0, weight)
         elseif c_big !== nothing
             cocycle = onecochain(T, simplices, index)
-            span = Span{U}(row.weight, U(Inf))
+            span = Span{U}(weight, U(Inf))
             push!(c_big, (cocycle = cocycle, span = span))
         end
     end
@@ -38,10 +39,9 @@ function persistent_cocycles(::Type{T}, ::Type{U}, cplx, max_dim) where {T, U}
     sv = simplexiterator(cplx)
     for (weight, (npts, indices)) in sv
         npts > length(cocycles)+1 && continue
-        row = (indices = indices, npts = npts, weight = weight)
         c_small = npts == 1 ? () : cocycles[npts-1]
         c_big = npts <= length(cocycles) ? cocycles[npts] : nothing
-        generate_remove_cocycles!(T, U, cplx[npts].simplices, c_small, c_big, row)
+        update_cocycles!(T, U, cplx[npts].simplices, c_small, c_big, indices, weight)
     end
     map(cocycles) do c
         filter(t -> !isempty(t.span), c)
