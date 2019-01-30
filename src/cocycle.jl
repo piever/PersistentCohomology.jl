@@ -51,7 +51,7 @@ function persistent_cocycles(::Type{T}, ::Type{U}, cplx, max_dim) where {T, U}
 end
 
 persistent_cocycles(::Type{T}, cplx, max_dim) where {T} =
-    persistent_cocycles(T, eltype(values(cplx[1])), cplx, max_dim)
+    persistent_cocycles(T, eltype(cplx[1]), cplx, max_dim)
 
 persistent_cocycles(::Type{T}, mat::AbstractSparseMatrix, max_dim) where {T} =
     persistent_cocycles(T, vietorisrips(mat, max_dim+1), max_dim)

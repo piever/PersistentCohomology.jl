@@ -29,6 +29,7 @@ using GaloisFields
     @test length(cplx) == 3
 
     cplx = vietorisrips(s, 1)
+    @test !issparse(cplx[1])
     @test keys(cplx[1]) == StructArray([(1,), (2,), (3,), (4,)],)
     @test values(cplx[1]) == [0.0, 0.0, 0.0, 0.0]
 
@@ -66,5 +67,7 @@ end
 
     @test spans[2][1] == Span{Float64}(short, long)
     @test findnz(values(cocycles[2][1])) == ([6], GF.([1]))
+    @test issparse(cocycles[2][1])
+    @test findnz(cocycles[2][1]) == (StructVector([(4, 3)]), GF.([1]))
     @test length(cocycles[2]) == 1
 end
