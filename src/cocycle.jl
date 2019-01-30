@@ -119,5 +119,10 @@ julia> spans[2]
 persistentcocycles(::Type{T}, cplx, max_dim = 1) where {T} =
     persistentcocycles(T, eltype(cplx[1]), cplx, max_dim)
 
+"""
+`persistentcocycles(T, mat::AbstractSparseMatrix, max_dim = 1)`
+
+Compute the filtered Vietoris Rips complex `cplx = vietorisrips(T, mat, max_dim+1)` from the sparse distance matrix `mat` and then compute the persistent cocycles on the result.
+"""
 persistentcocycles(::Type{T}, mat::AbstractSparseMatrix, max_dim = 1) where {T} =
     persistentcocycles(T, vietorisrips(mat, max_dim+1), max_dim)
