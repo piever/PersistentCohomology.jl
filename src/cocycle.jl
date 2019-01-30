@@ -1,7 +1,7 @@
 const Span{U} = Interval{:closed, :open, U}
 
 function initialize_cocycles(::Type{T}, ::Type{U}, cplx) where {T, U}
-    instances = map(t -> Cochain(t, spzeros(T, length(t))), cplx)
+    instances = map(t -> Cochain(keys(t), spzeros(T, length(t))), cplx)
     map(instances) do inst
         typ = NamedTuple{(:cocycle, :span), Tuple{typeof(inst), Span{U}}}
         StructVector{typ}(undef, 0)

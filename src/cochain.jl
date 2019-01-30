@@ -8,8 +8,6 @@ Base.values(c::Cochain) = c.values
 Base.length(c::Cochain) = length(values(c))
 Base.getindex(s::Cochain, t::Tuple) = values(s)[searchsortedfirst(keys(s), t)]
 
-Cochain(c::Cochain, v::AbstractVector) = Cochain(keys(c), v)
-
 function onecochain(::Type{T}, c::StructVector, i) where {T}
     v = sparsevec([i], one(T), length(c))
     Cochain(c, v)
