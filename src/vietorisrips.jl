@@ -31,8 +31,8 @@ end
 
 function add_cofaces!(v, g, sim, sim_weight, weighted_neighbors, dim_max)
     cocycle = v[length(sim)]
-    push!(cocycle.simplices, sim)
-    push!(cocycle.values, sim_weight)
+    push!(keys(cocycle), sim)
+    push!(values(cocycle), sim_weight)
 
     (length(sim) > dim_max) && return
 

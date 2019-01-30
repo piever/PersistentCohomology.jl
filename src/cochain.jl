@@ -3,15 +3,16 @@ struct Cochain{S<:StructVector, V<:AbstractVector}
     values::V
 end
 
-Base.length(c::Cochain) = length(c.values)
-Base.getindex(s::Cochain, t::Tuple) = s.values[searchsortedfirst(s.simplices, t)]
+Base.keys(c) = c.simplices
+Base.values(c::Cochain) = c.values
+Base.length(c::Cochain) = length(values(c))
+Base.getindex(s::Cochain, t::Tuple) = values(s)[searchsortedfirst(keys(s), t)]
 
-Cochain(c::Cochain, v::AbstractVector) = Cochain(c.simplices, v)
+Cochain(c::Cochain, v::AbstractVector) = Cochain(keys(c), v)
 
 function onecochain(::Type{T}, c::StructVector, i) where {T}
-    null = spzeros(T, length(c))
-    null[i] = one(T)
-    Cochain(c, null)
+    v = sparsevec([i], one(T), length(c))
+    Cochain(c, v)
 end
 
 function face(s, i)

@@ -21,7 +21,8 @@ function update_cocycles!(::Type{T}, ::Type{U}, simplices,
             lc, ic = c_small[li]
             for ii in s[1:end-1]
                 ratio = m[ii] / m[li]
-                c_small[ii].cocycle.values .-= ratio .* lc.values
+                vals = values(c_small[ii].cocycle)
+                vals .-= ratio .* values(lc)
             end
             t0, _ = endpoints(ic)
             c_small.span[li] = Span{U}(t0, weight)
@@ -41,7 +42,7 @@ function persistent_cocycles(::Type{T}, ::Type{U}, cplx, max_dim) where {T, U}
         npts > length(cocycles)+1 && continue
         c_small = npts == 1 ? () : cocycles[npts-1]
         c_big = npts <= length(cocycles) ? cocycles[npts] : nothing
-        update_cocycles!(T, U, cplx[npts].simplices, c_small, c_big, indices, weight)
+        update_cocycles!(T, U, keys(cplx[npts]), c_small, c_big, indices, weight)
     end
     map(cocycles) do c
         filter(t -> !isempty(t.span), c)
@@ -49,7 +50,7 @@ function persistent_cocycles(::Type{T}, ::Type{U}, cplx, max_dim) where {T, U}
 end
 
 persistent_cocycles(::Type{T}, cplx, max_dim) where {T} =
-    persistent_cocycles(T, eltype(cplx[1].values), cplx, max_dim)
+    persistent_cocycles(T, eltype(values(cplx[1])), cplx, max_dim)
 
 persistent_cocycles(::Type{T}, mat::AbstractSparseMatrix, max_dim) where {T} =
     persistent_cocycles(T, vietorisrips(mat, max_dim+1), max_dim)
