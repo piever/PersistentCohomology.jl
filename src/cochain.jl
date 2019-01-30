@@ -79,12 +79,18 @@ function onecochain(::Type{T}, c::AbstractVector, i) where {T}
     Cochain(c, v)
 end
 
+function facevalue(cochain, simplex, i)
+    @inbounds f = face(simplex, i)
+    cochain[f]
+end
+
 @generated function boundaryvalue(cochain, simplex::T) where T
     N = nv(T)
-    expr = :(cochain[face(simplex, 1)])
+    faces = [Expr(:call, :facevalue, :cochain, :simplex, i) for i in 1:N]
+    expr = faces[1]
     for i in 2:N
         sign = isodd(i) ? (:+) : (:-) 
-        expr = Expr(:call, sign, expr, :(cochain[face(simplex, $i)]))
+        expr = Expr(:call, sign, expr, faces[i])
     end
     expr
 end
