@@ -34,7 +34,7 @@ function update_cocycles!(::Type{T}, ::Type{U}, simplices,
     end
 end
 
-function persistent_cocycles(::Type{T}, ::Type{U}, cplx, max_dim) where {T, U}
+function persistentcocycles(::Type{T}, ::Type{U}, cplx, max_dim) where {T, U}
     cocycles_extended = initialize_cocycles(T, U, cplx)
     cocycles = cocycles_extended[1:min(length(cocycles_extended), max_dim+1)] 
     sv = simplexiterator(cplx)
@@ -50,8 +50,8 @@ function persistent_cocycles(::Type{T}, ::Type{U}, cplx, max_dim) where {T, U}
     (map(t -> t.cocycle, fc), map(t -> t.span, fc))
 end
 
-persistent_cocycles(::Type{T}, cplx, max_dim) where {T} =
-    persistent_cocycles(T, eltype(cplx[1]), cplx, max_dim)
+persistentcocycles(::Type{T}, cplx, max_dim) where {T} =
+    persistentcocycles(T, eltype(cplx[1]), cplx, max_dim)
 
-persistent_cocycles(::Type{T}, mat::AbstractSparseMatrix, max_dim) where {T} =
-    persistent_cocycles(T, vietorisrips(mat, max_dim+1), max_dim)
+persistentcocycles(::Type{T}, mat::AbstractSparseMatrix, max_dim) where {T} =
+    persistentcocycles(T, vietorisrips(mat, max_dim+1), max_dim)
