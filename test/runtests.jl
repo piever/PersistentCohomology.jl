@@ -39,7 +39,7 @@ using GaloisFields
     @test length(cplx) == 2
 end
     
-@testset "persistent_cocycles" begin
+@testset "persistentcocycles" begin
     GF = @GaloisField 3
     ts = [-pi, -pi/2, 0, pi/2]
     pts = map(t -> [cos(t), sin(t)], ts)
@@ -53,7 +53,7 @@ end
     short = m[1, 2]
     long = m[1, 3]
 
-    cocycles, spans = persistent_cocycles(GF, cplx, 1)
+    cocycles, spans = persistentcocycles(GF, cplx, 1)
 
     @test spans[1][1] == Span{Float64}(0, Inf)
     @test findnz(values(cocycles[1][1])) == ([1, 2, 3, 4], GF.([1, 1, 1, 1]))

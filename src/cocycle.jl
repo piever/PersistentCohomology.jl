@@ -34,7 +34,7 @@ function update_cocycles!(::Type{T}, ::Type{U}, simplices,
     end
 end
 
-function persistent_cocycles(::Type{T}, ::Type{U}, cplx, max_dim) where {T, U}
+function persistentcocycles(::Type{T}, ::Type{U}, cplx, max_dim) where {T, U}
     cocycles_extended = initialize_cocycles(T, U, cplx)
     cocycles = cocycles_extended[1:min(length(cocycles_extended), max_dim+1)] 
     sv = simplexiterator(cplx)
@@ -50,8 +50,87 @@ function persistent_cocycles(::Type{T}, ::Type{U}, cplx, max_dim) where {T, U}
     (map(t -> t.cocycle, fc), map(t -> t.span, fc))
 end
 
-persistent_cocycles(::Type{T}, cplx, max_dim) where {T} =
-    persistent_cocycles(T, eltype(cplx[1]), cplx, max_dim)
+"""
+`persistentcocycles(T, cplx, max_dim = 1)`
 
-persistent_cocycles(::Type{T}, mat::AbstractSparseMatrix, max_dim) where {T} =
-    persistent_cocycles(T, vietorisrips(mat, max_dim+1), max_dim)
+Implementation of the persistent cocycle algorithm from Persistent Cohomology and Circular Coordinates - Vin de Silva, Dmitriy Morozov, Mikael Vejdemo-Johansson (https://link.springer.com/article/10.1007/s00454-011-9344-x). 
+
+Type `T` must represent a field. Finite fields are available in Julia via the GaloisFields package. `cplx` is a filtered complex (where simplices are assumed to be sorted): see `vietorisrips` for a description of such complex and a way to build it from a sparse distance matrix.
+
+Return two tuples: cocycles (in turn represented as a tuple from 0-cocycles to `max_dim`-cocycles) and spans (again as a tuple) representing the interval during which each cocycle lives.
+
+## Examples
+
+```julia
+julia> using SparseArrays
+
+julia> M = sparse(diagm(1 => fill(sqrt(2), 3), 2 => fill(2.0, 2), 3 => [sqrt(2)]))
+4×4 SparseMatrixCSC{Float64,Int64} with 6 stored entries:
+  [1, 2]  =  1.41421
+  [1, 3]  =  2.0
+  [2, 3]  =  1.41421
+  [1, 4]  =  1.41421
+  [2, 4]  =  2.0
+  [3, 4]  =  1.41421
+
+julia> cplx = vietorisrips(M, 2)
+(Float64-valued 0-Cochain, Float64-valued 1-Cochain, Float64-valued 2-Cochain)
+
+julia> using GaloisFields
+
+julia> cocycles, spans = persistentcocycles(@GaloisField(3), cplx, 1);
+
+julia> cocycles[1]
+4-element Array{Cochain{StructArrays.StructArray{Tuple{Int64},1,NamedTuple{(:x1,),Tuple{Array{Int64,1}}}},SparseVector{𝔽₃,Int64}},1}:
+ Sparse 𝔽₃-valued 0-Cochain. Non-zero values:
+(1,) => 1
+(2,) => 1
+(3,) => 1
+(4,) => 1
+
+ Sparse 𝔽₃-valued 0-Cochain. Non-zero values:
+(2,) => 1
+
+ Sparse 𝔽₃-valued 0-Cochain. Non-zero values:
+(3,) => 1
+
+ Sparse 𝔽₃-valued 0-Cochain. Non-zero values:
+(4,) => 1
+
+
+julia> spans[1]
+4-element Array{IntervalSets.Interval{:closed,:open,Float64},1}:
+ 0.0..Inf (closed–open)
+ 0.0..1.4142135623730951 (closed–open)
+ 0.0..1.4142135623730951 (closed–open)
+ 0.0..1.4142135623730951 (closed–open)
+
+julia> cocycles[2]
+1-element Array{Cochain{StructArrays.StructArray{Tuple{Int64,Int64},1,NamedTuple{(:x1, :x2),Tuple{Array{Int64,1},Array{Int64,1}}}},SparseVector{𝔽₃,Int64}},1}:
+ Sparse 𝔽₃-valued 1-Cochain. Non-zero values:
+(4, 3) => 1
+
+
+julia> spans[2]
+1-element Array{IntervalSets.Interval{:closed,:open,Float64},1}:
+ 1.4142135623730951..2.0 (closed–open)
+```
+"""
+persistentcocycles(::Type{T}, cplx, max_dim = 1) where {T} =
+    persistentcocycles(T, eltype(cplx[1]), cplx, max_dim)
+
+"""
+`persistentcocycles(T, mat::AbstractSparseMatrix, max_dim = 1)`
+
+Compute the filtered Vietoris Rips complex `cplx = vietorisrips(T, mat, max_dim+1)` from the sparse distance matrix `mat` and then compute the persistent cocycles on the result.
+
+```julia
+julia> using GaloisFields, SparseArrays
+
+julia> M = sparse(diagm(1 => fill(sqrt(2), 3), 2 => fill(2.0, 2), 3 => [sqrt(2)]));
+
+julia> persistentcocycles(@GaloisField(3), M, 1);
+```
+"""
+persistentcocycles(::Type{T}, mat::AbstractSparseMatrix, max_dim = 1) where {T} =
+    persistentcocycles(T, vietorisrips(mat, max_dim+1), max_dim)

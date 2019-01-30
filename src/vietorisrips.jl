@@ -1,3 +1,37 @@
+"""
+`vietorisrips(g::AbstractSparseMatrix{U, T}, dim_max = 2) where {U, T}`
+
+Return a filtered Vietoris Rips complex (up to dimension `dim_max`) from a sparse distance matrix `g`. Only the upper triangular part of `g` is used. Zero values of the matrix are ignored: to obtain the rips filtration up to a threshold `t`, simply remove all entries of `g` greater than `t`. Discretizing values of entries in `g` may also improve performance.
+
+The filtered complex is a tuple (where the first element corresponds to 0-simplices, the second element to 1-simplices and so on). The filtration on n-simplices is represented (slightly improperly) as a `U`-valued n-`Cochain`.
+
+## Examples
+
+```julia
+julia> using SparseArrays
+
+julia> M = sparse([1, 2, 1], [2, 3, 3], [0.3, 0.2, 0.4], 3, 3)
+3×3 SparseMatrixCSC{Float64,Int64} with 3 stored entries:
+  [1, 2]  =  0.3
+  [1, 3]  =  0.4
+  [2, 3]  =  0.2
+
+julia> cplx = vietorisrips(M, 2)
+(Float64-valued 0-Cochain, Float64-valued 1-Cochain, Float64-valued 2-Cochain)
+
+julia> keys(cplx[2])
+3-element StructArrays.StructArray{Tuple{Int64,Int64},1,NamedTuple{(:x1, :x2),Tuple{Array{Int64,1},Array{Int64,1}}}}:
+ (2, 1)
+ (3, 1)
+ (3, 2)
+
+julia> values(cplx[2])
+3-element Array{Float64,1}:
+ 0.3
+ 0.4
+ 0.2
+```
+"""
 function vietorisrips(g::AbstractSparseMatrix, dim_max = 2)
     lt = sparse_uppertriangular(g)
     vietorisrips_uppertriangular(lt, dim_max)
