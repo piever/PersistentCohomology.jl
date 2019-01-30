@@ -123,6 +123,14 @@ persistentcocycles(::Type{T}, cplx, max_dim = 1) where {T} =
 `persistentcocycles(T, mat::AbstractSparseMatrix, max_dim = 1)`
 
 Compute the filtered Vietoris Rips complex `cplx = vietorisrips(T, mat, max_dim+1)` from the sparse distance matrix `mat` and then compute the persistent cocycles on the result.
+
+```julia
+julia> using GaloisFields, SparseArrays
+
+julia> M = sparse(diagm(1 => fill(sqrt(2), 3), 2 => fill(2.0, 2), 3 => [sqrt(2)]));
+
+julia> persistentcocycles(@GaloisField(3), M, 1);
+```
 """
 persistentcocycles(::Type{T}, mat::AbstractSparseMatrix, max_dim = 1) where {T} =
     persistentcocycles(T, vietorisrips(mat, max_dim+1), max_dim)
