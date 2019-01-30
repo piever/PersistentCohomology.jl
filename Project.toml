@@ -10,8 +10,8 @@ SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 StructArrays = "09ab397b-f2b6-538f-b94a-2f83cf4a842a"
 
 [extras]
-GaloisFields = "8d0d7f98-d412-5cd4-8397-071c807280aa"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+GaloisFields = "8d0d7f98-d412-5cd4-8397-071c807280aa"
 
 [targets]
 test = ["Test", "GaloisFields"]

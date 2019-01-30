@@ -2,8 +2,6 @@
 
 face(s::T, i) where {T} = error("face not implemented for type $T")
 
-extend(s::T, i) where {T} = error("extend not implemented for type $T")
-
 nv(::Type{T}) where {T} = error("nv not implemented for type $T")
 
 ## Tuple implementation
@@ -20,8 +18,6 @@ nv(::Type{T}) where {T} = error("nv not implemented for type $T")
         @inbounds return tuple($(exprs...))
     end
 end
-
-extend(s::Tuple, i) = (s..., i)
 
 nv(::Type{<:NTuple{N, Any}}) where {N} = N
 
