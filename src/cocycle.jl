@@ -44,9 +44,10 @@ function persistent_cocycles(::Type{T}, ::Type{U}, cplx, max_dim) where {T, U}
         c_big = npts <= length(cocycles) ? cocycles[npts] : nothing
         update_cocycles!(T, U, keys(cplx[npts]), c_small, c_big, indices, weight)
     end
-    map(cocycles) do c
+    fc = map(cocycles) do c
         filter(t -> !isempty(t.span), c)
     end
+    (map(t -> t.cocycle, fc), map(t -> t.span, fc))
 end
 
 persistent_cocycles(::Type{T}, cplx, max_dim) where {T} =
