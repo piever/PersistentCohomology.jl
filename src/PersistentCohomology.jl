@@ -2,7 +2,6 @@ module PersistentCohomology
 
 using StructArrays
 using StructArrays: finduniquesorted
-using StaticArrays
 using SparseArrays, LinearAlgebra
 using IntervalSets
 

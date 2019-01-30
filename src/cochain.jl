@@ -1,7 +1,7 @@
 """"
 `Cochain(simplices::AbstractVector, values::AbstractVector)`
 
-A type representing a cochain, i.e. a way to associate a value to each simplex. Simplices are expressed as an abstract vector `simplices`. Values are stored in `values`. In practice, `values` will often be a sparse vector.
+A type representing a cochain, i.e. a way to associate a value to each simplex. Simplices are expressed as an abstract vector `simplices` (generally represented as tuples). Values are stored in `values`. In practice, `values` will often be a sparse vector, in which case `findnz` returns the simplices where the cochian has non-zero value and the list of values on those simplices.
 
 Use `keys` and `values` to access simplices and values respectively. The value at a specific simplex can be accessed with `getindex`.
 

@@ -6,18 +6,19 @@ extend(s::T, i) where {T} = error("extend not implemented for type $T")
 
 nv(::Type{T}) where {T} = error("nv not implemented for type $T")
 
-## StaticArrays implementation
-
-face(s::StaticVector, i) = deleteat(s, i)
-
-extend(s::StaticVector, i) = push(s, i)
-
-nv(::Type{<:StaticVector{N}}) where {N} = N
-
 ## Tuple implementation
 
-function face(s::Tuple, i)
-    Tuple(val for (ind, val) in enumerate(s) if ind != i)
+# From deleteat method in StaticArrays
+@generated function face(vec::NTuple{N, Any}, index) where {N}
+    newlen = N - 1
+    exprs = [:(ifelse($i < index, vec[$i], vec[$i+1])) for i = 1:newlen]
+    return quote
+        Base.@_propagate_inbounds_meta
+        @boundscheck if (index < 1 || index > $N)
+            throw(BoundsError(vec, index))
+        end
+        @inbounds return tuple($(exprs...))
+    end
 end
 
 extend(s::Tuple, i) = (s..., i)
