@@ -39,7 +39,7 @@ function add_cofaces!(v, g, sim, sim_weight, weighted_neighbors, dim_max)
     for (n, w) in weighted_neighbors
         ptr = g.colptr[n]:g.colptr[n+1]-1
         new_weighted_neighbors = neighbors_intersection(g.rowval[ptr], g.nzval[ptr], weighted_neighbors)
-        add_cofaces!(v, g, (sim..., n), max(w, sim_weight), new_weighted_neighbors, dim_max)
+        add_cofaces!(v, g, extend(sim, n), max(w, sim_weight), new_weighted_neighbors, dim_max)
     end
 end
 
